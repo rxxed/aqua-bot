@@ -3,7 +3,7 @@ import json
 import time, random
 
 
-BOT_TOKEN = ""
+BOT_TOKEN = "" # telegram API key
 BASE_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/"
 
 
@@ -13,6 +13,7 @@ def send_request_to_url(url):
     response = response.content.decode("utf8")
     return response
 
+
 # this function returns the json response from a url as a python dict
 def get_json_from_url(url):
     response = send_request_to_url(url)
@@ -21,7 +22,8 @@ def get_json_from_url(url):
 
 
 # this function will grab the latest updates
-# todo: process commands from the user
+# todo: process messages from the user
+# todo: add commands
 def get_updates():
     url = BASE_URL + 'getUpdates'
     updates = get_json_from_url(url)
