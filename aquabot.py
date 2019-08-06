@@ -29,12 +29,33 @@ def get_message():
     return message_to_be_sent
 
 
-# todo: process messages from the user
-def get_chat_id():
+def get_updates(offset = None):
     url = BASE_URL + 'getUpdates'
+    if offset:
+        url += f"&offset={offset}"
     updates = get_json_from_url(url)
+    return updates
+
+
+# todo: process messages from the user
+def get_chat_id(updates):
     chat_id = updates["result"][0]["message"]["chat"]["id"]
     return chat_id
+
+
+def get_latest_chat_id_and_text(updates):
+    num_updates = len(updates["result"])
+    last_update = num_updates - 1
+    text = updates["result"][last_update]["message"]["text"]
+    chat_id = updates["result"][last_update]["message"]["chat"]["id"]
+    return (text, chat_id)
+
+
+def get_latest_update_id(updates):
+    update_ids = []
+    for update in updates["result"]:
+        update_ids.append(int(update["update_id"]))
+    return max(update_ids)
 
 
 def send_message(message, chat_id):
@@ -43,16 +64,25 @@ def send_message(message, chat_id):
     send_request_to_url(url)
 
 
+def handle_user_messages():
+    text, chatid = get_latest_chat_id_and_text(get_updates())
+    print(text + "  " + str(chatid))
+
+
 def notify_user(interval):
     # todo: add /stop command to pause sending messages
     i = 0
     while i < 10:
-        send_message(get_message(), get_chat_id())
+        send_message(get_message(), get_chat_id(get_updates()))
         time.sleep(interval)
         i += 1
 
 
 # todo: add counter to count total glasses of water drunk on the day /waterCount
 # todo: ask the user for interval /setInterval
-interval = 3 # 3600 seconds = 1 hour
-notify_user(interval)
+# interval = 3 # 3600 seconds = 1 hour
+# notify_user(interval)
+def main():
+    while(1):
+        #if new message:
+        handle_user_messages()
