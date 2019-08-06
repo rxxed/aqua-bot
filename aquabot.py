@@ -3,6 +3,9 @@ import json
 import time, random
 
 
+from messages_list import messages_list
+
+
 BOT_TOKEN = "" # telegram API key
 BASE_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/"
 
@@ -21,26 +24,16 @@ def get_json_from_url(url):
     return response_json_dict
 
 
-# this function will grab the latest updates
-# todo: process messages from the user
-# todo: add commands
-def get_updates():
-    url = BASE_URL + 'getUpdates'
-    updates = get_json_from_url(url)
-    return updates
-
-
 def get_message():
-    messages_list = ["Drink water", "Did you drink water?",
-                 "How about one more glass of water?",
-                 "Drink water for 10 nanoseconds of good luck",
-                 "Your body desires water", "H2O time motherf*cker"]
     message_to_be_sent = random.choice(messages_list)
     return message_to_be_sent
 
 
+# todo: process messages from the user
 def get_chat_id():
-    chat_id = get_updates()["result"][0]["message"]["chat"]["id"]
+    url = BASE_URL + 'getUpdates'
+    updates = get_json_from_url(url)
+    chat_id = updates["result"][0]["message"]["chat"]["id"]
     return chat_id
 
 
@@ -61,5 +54,5 @@ def notify_user(interval):
 
 # todo: add counter to count total glasses of water drunk on the day /waterCount
 # todo: ask the user for interval /setInterval
-interval = 3600 # 3600 seconds = 1 hour
+interval = 3 # 3600 seconds = 1 hour
 notify_user(interval)
