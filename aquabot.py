@@ -14,7 +14,7 @@ BASE_URL = f"https://api.telegram.org/bot{BOT_TOKEN}/"
 
 
 # default 1 hour interval time between notifications
-interval_seconds = 3600
+# interval_seconds = 3600
 
 
 # this function returns the response from a url
