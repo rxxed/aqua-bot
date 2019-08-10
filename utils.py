@@ -68,3 +68,13 @@ def send_message(message, chat_id):
     message = urllib.parse.quote_plus(message.encode("utf8"))
     url = BASE_URL + f"sendMessage?text={message}&chat_id={chat_id}"
     send_request_to_url(url)
+
+#
+# def get_reply_from_user(updates):
+#     for update in updates["result"]:
+#         try:
+#             text = update["message"]["text"]
+#             chatid = update["message"]["chat"]["id"]
+#             return text
+#         except Exception as e:
+#             print(e)
